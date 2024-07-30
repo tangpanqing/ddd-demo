@@ -1,13 +1,10 @@
 package com.example.test_ddd;
 
-import com.example.test_ddd.domain.goods.GoodsAggregation;
 import com.example.test_ddd.domain.goods.GoodsRepository;
-import com.example.test_ddd.domain.order.OrderAggregation;
 import com.example.test_ddd.domain.order.OrderRepository;
 
 import com.example.test_ddd.domain.user.UserAggregation;
 import com.example.test_ddd.domain.user.UserRepository;
-import com.example.test_ddd.utils.FactoryUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

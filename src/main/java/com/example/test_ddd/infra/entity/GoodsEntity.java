@@ -1,4 +1,4 @@
-package com.example.test_ddd.entity;
+package com.example.test_ddd.infra.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

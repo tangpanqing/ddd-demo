@@ -1,4 +1,4 @@
-package com.example.test_ddd.enums;
+package com.example.test_ddd.infra.enums;
 
 public class OrderStatusEnum {
     public static Integer INIT = 1;

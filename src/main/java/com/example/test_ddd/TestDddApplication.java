@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.example.test_ddd.mapper")
+@MapperScan("com.example.test_ddd.infra.mapper")
 public class TestDddApplication {
 
     public static void main(String[] args) {

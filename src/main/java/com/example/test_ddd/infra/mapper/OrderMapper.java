@@ -1,7 +1,7 @@
-package com.example.test_ddd.mapper;
+package com.example.test_ddd.infra.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.test_ddd.entity.OrderEntity;
+import com.example.test_ddd.infra.entity.OrderEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

@@ -1,11 +1,12 @@
-package com.example.test_ddd.utils;
+package com.example.test_ddd.domain;
 
 import com.example.test_ddd.domain.goods.GoodsAggregation;
 import com.example.test_ddd.domain.order.OrderAggregation;
-import com.example.test_ddd.entity.GoodsEntity;
-import com.example.test_ddd.entity.GoodsSpecEntity;
-import com.example.test_ddd.entity.OrderEntity;
-import com.example.test_ddd.enums.OrderStatusEnum;
+import com.example.test_ddd.infra.entity.GoodsEntity;
+import com.example.test_ddd.infra.entity.GoodsSpecEntity;
+import com.example.test_ddd.infra.entity.OrderEntity;
+import com.example.test_ddd.infra.enums.OrderStatusEnum;
+import com.example.test_ddd.infra.utils.SnowflakeUtil;
 
 import java.util.ArrayList;
 import java.util.List;

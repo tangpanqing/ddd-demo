@@ -2,17 +2,14 @@ package com.example.test_ddd.controller;
 
 import com.example.test_ddd.domain.order.OrderAggregation;
 import com.example.test_ddd.domain.order.OrderRepository;
-import com.example.test_ddd.domain.user.UserAggregation;
 import com.example.test_ddd.domain.user.UserRepository;
-import com.example.test_ddd.entity.OrderCommentEntity;
-import com.example.test_ddd.entity.OrderEntity;
-import com.example.test_ddd.mapper.OrderCommentMapper;
-import com.example.test_ddd.mapper.OrderMapper;
-import com.example.test_ddd.utils.FactoryUtil;
+import com.example.test_ddd.infra.entity.OrderCommentEntity;
+import com.example.test_ddd.infra.entity.OrderEntity;
+import com.example.test_ddd.domain.FactoryUtil;
+import com.example.test_ddd.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -27,29 +24,26 @@ public class OrderController {
     UserRepository userRepository;
 
     @Autowired
-    OrderMapper orderMapper;
-
-    @Autowired
-    OrderCommentMapper orderCommentMapper;
+    OrderService orderService;
 
     //注意，这里应该返回VO-ViewObject
     @RequestMapping("/order/query")
     @ResponseBody
     public List<OrderEntity> query() {
-        return orderMapper.selectList(null);
+        return orderService.query();
     }
 
     //注意，这里应该返回VO-ViewObject
     @RequestMapping("/orderComment/query")
     @ResponseBody
     public List<OrderCommentEntity> orderCommentQuery() {
-        return orderCommentMapper.selectList(null);
+        return orderService.queryComment();
     }
 
     @RequestMapping("/order/detail")
     @ResponseBody
     public OrderAggregation detail(Long orderId) {
-        OrderAggregation orderAgg = orderRepository.find(orderId);
+        OrderAggregation orderAgg = orderRepository.take(orderId);
 
         return orderAgg;
     }
@@ -58,7 +52,7 @@ public class OrderController {
     @ResponseBody
     public OrderAggregation init() {
         OrderAggregation orderAgg = FactoryUtil.genOrder(1L);
-        orderRepository.save(orderAgg);
+        orderRepository.put(orderAgg);
 
         return orderAgg;
     }
@@ -66,25 +60,15 @@ public class OrderController {
     @RequestMapping("/order/pay")
     @ResponseBody
     public OrderAggregation pay(Long orderId, String payCode) {
-        OrderAggregation orderAgg = orderRepository.find(orderId);
-        UserAggregation userAgg = userRepository.find(orderAgg.getOrderBasic().getUserId());
-
-        orderAgg.pay(payCode);
-
-        userAgg.consume(orderAgg.getOrderBasic().getTotalMoney());
-
-        orderRepository.save(orderAgg);
-        userRepository.save(userAgg);
-
-        return orderAgg;
+        return orderService.pay(orderId, payCode);
     }
 
     @RequestMapping("/order/deliver")
     @ResponseBody
     public OrderAggregation deliver(Long orderId, String deliverCode) {
-        OrderAggregation orderAgg = orderRepository.find(orderId);
+        OrderAggregation orderAgg = orderRepository.take(orderId);
         orderAgg.deliver(deliverCode);
-        orderRepository.save(orderAgg);
+        orderRepository.put(orderAgg);
 
         return orderAgg;
     }
@@ -92,9 +76,9 @@ public class OrderController {
     @RequestMapping("/order/take")
     @ResponseBody
     public OrderAggregation take(Long orderId, String takeCode) {
-        OrderAggregation orderAgg = orderRepository.find(orderId);
+        OrderAggregation orderAgg = orderRepository.take(orderId);
         orderAgg.take(takeCode);
-        orderRepository.save(orderAgg);
+        orderRepository.put(orderAgg);
 
         return orderAgg;
     }
@@ -102,9 +86,9 @@ public class OrderController {
     @RequestMapping("/order/comment")
     @ResponseBody
     public OrderAggregation comment(Long orderId, String commentContent) {
-        OrderAggregation orderAgg = orderRepository.find(orderId);
+        OrderAggregation orderAgg = orderRepository.take(orderId);
         orderAgg.comment(commentContent);
-        orderRepository.save(orderAgg);
+        orderRepository.put(orderAgg);
 
         return orderAgg;
     }
@@ -112,9 +96,9 @@ public class OrderController {
     @RequestMapping("/order/cancel")
     @ResponseBody
     public OrderAggregation cancel(Long orderId) {
-        OrderAggregation orderAgg = orderRepository.find(orderId);
+        OrderAggregation orderAgg = orderRepository.take(orderId);
         orderAgg.cancel();
-        orderRepository.save(orderAgg);
+        orderRepository.put(orderAgg);
 
         return orderAgg;
     }

@@ -1,4 +1,4 @@
-package com.example.test_ddd.utils;
+package com.example.test_ddd.infra.utils;
 
 import java.util.concurrent.ThreadLocalRandom;
 

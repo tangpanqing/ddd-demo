@@ -1,10 +1,10 @@
 package com.example.test_ddd.domain.order;
 
-import com.example.test_ddd.entity.OrderCommentEntity;
-import com.example.test_ddd.entity.OrderEntity;
-import com.example.test_ddd.entity.OrderItemEntity;
-import com.example.test_ddd.enums.OrderStatusEnum;
-import com.example.test_ddd.utils.SnowflakeUtil;
+import com.example.test_ddd.infra.entity.OrderCommentEntity;
+import com.example.test_ddd.infra.entity.OrderEntity;
+import com.example.test_ddd.infra.entity.OrderItemEntity;
+import com.example.test_ddd.infra.enums.OrderStatusEnum;
+import com.example.test_ddd.infra.utils.SnowflakeUtil;
 import lombok.Data;
 
 import java.util.List;
