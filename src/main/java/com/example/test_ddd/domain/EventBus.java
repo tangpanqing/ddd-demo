@@ -1,5 +1,7 @@
 package com.example.test_ddd.domain;
 
 public interface EventBus {
-    void onUsernameChange(String name);
+    void onUserNicknameChanged(Long userId, String name);
+
+    void onGoodsNameChanged(Long goodsId, String name);
 }

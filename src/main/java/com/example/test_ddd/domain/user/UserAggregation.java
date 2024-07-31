@@ -3,7 +3,8 @@ package com.example.test_ddd.domain.user;
 import com.example.test_ddd.domain.EventBus;
 import com.example.test_ddd.infra.entity.UserEntity;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 @Data
 public class UserAggregation {
@@ -17,10 +18,10 @@ public class UserAggregation {
         getUserEntity().setBalance(getUserEntity().getBalance() - money);
     }
 
-    public void changeName(String name){
-        if(!getUserEntity().getNickname().equals(name)){
-            getUserEntity().setNickname(name);
-            eventBus.onUsernameChange(name);
+    public void changeNickname(String nickname){
+        if(!userEntity.getNickname().equals(nickname)){
+            userEntity.setNickname(nickname);
+            eventBus.onUserNicknameChanged(userEntity.getUserId(), nickname);
         }
     }
 }

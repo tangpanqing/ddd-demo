@@ -7,7 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventBusImpl implements EventBus {
     @Override
-    public void onUsernameChange(String name) {
+    public void onUserNicknameChanged(Long userId, String nickname) {
+
+    }
+
+    @Override
+    public void onGoodsNameChanged(Long goodsId, String name) {
 
     }
 }
