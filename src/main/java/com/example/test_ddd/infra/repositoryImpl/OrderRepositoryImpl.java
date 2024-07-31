@@ -11,32 +11,38 @@ import com.example.test_ddd.infra.mapper.OrderItemMapper;
 import com.example.test_ddd.infra.mapper.OrderMapper;
 import com.example.test_ddd.infra.utils.CompareUtil;
 import com.example.test_ddd.infra.utils.SnapshotUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class OrderRepositoryImpl implements OrderRepository {
-    @Autowired
+    @Resource
     OrderMapper orderMapper;
 
-    @Autowired
+    @Resource
     OrderItemMapper orderItemMapper;
 
-    @Autowired
+    @Resource
     OrderCommentMapper orderCommentMapper;
 
     public OrderAggregation take(Long orderId) {
-        OrderAggregation orderAggregation = new OrderAggregation();
-        orderAggregation.setOrderId(orderId);
-        orderAggregation.setOrderBasic(orderMapper.selectById(orderId));
-        orderAggregation.setOrderItemList(orderItemMapper.selectList((new LambdaQueryWrapper<OrderItemEntity>()).eq(OrderItemEntity::getOrderId, orderId)));
-        orderAggregation.setOrderCommentList(orderCommentMapper.selectList((new LambdaQueryWrapper<OrderCommentEntity>()).eq(OrderCommentEntity::getOrderId, orderId)));
+        OrderEntity orderBase = orderMapper.selectById(orderId);
+        if (null == orderBase) {
+            return null;
+        }
 
-        SnapshotUtil.putObject(orderAggregation);
-        return orderAggregation;
+        OrderAggregation orderAgg = new OrderAggregation();
+        orderAgg.setOrderId(orderId);
+        orderAgg.setOrderBasic(orderBase);
+        orderAgg.setOrderItemList(orderItemMapper.selectList((new LambdaQueryWrapper<OrderItemEntity>()).eq(OrderItemEntity::getOrderId, orderId)));
+        orderAgg.setOrderCommentList(orderCommentMapper.selectList((new LambdaQueryWrapper<OrderCommentEntity>()).eq(OrderCommentEntity::getOrderId, orderId)));
+
+        SnapshotUtil.putObject(orderAgg);
+        return orderAgg;
     }
 
-    public void put(OrderAggregation orderAggregation) {
+    public void put(OrderAggregation orderAgg) {
         //实例化
         CompareUtil compareUtil = new CompareUtil();
 
@@ -46,7 +52,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         compareUtil.regCallback(OrderCommentEntity.class, orderCommentMapper);
 
         //比较
-        compareUtil.compare(SnapshotUtil.getObject(orderAggregation), orderAggregation);
+        compareUtil.compare(SnapshotUtil.getObject(orderAgg), orderAgg);
 
         //执行
         compareUtil.run();

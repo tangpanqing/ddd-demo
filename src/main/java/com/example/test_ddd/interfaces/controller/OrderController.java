@@ -5,7 +5,7 @@ import com.example.test_ddd.domain.order.OrderRepository;
 import com.example.test_ddd.domain.user.UserRepository;
 import com.example.test_ddd.infra.entity.OrderCommentEntity;
 import com.example.test_ddd.infra.entity.OrderEntity;
-import com.example.test_ddd.domain.FactoryUtil;
+import com.example.test_ddd.domain.Factory;
 import com.example.test_ddd.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,13 +17,16 @@ import java.util.List;
 @Controller
 public class OrderController {
 
-    @Autowired
+    @Resource
+    Factory factory;
+
+    @Resource
     OrderRepository orderRepository;
 
-    @Autowired
+    @Resource
     UserRepository userRepository;
 
-    @Autowired
+    @Resource
     OrderService orderService;
 
     //注意，这里应该返回VO-ViewObject
@@ -51,7 +54,7 @@ public class OrderController {
     @RequestMapping("/order/init")
     @ResponseBody
     public OrderAggregation init() {
-        OrderAggregation orderAgg = FactoryUtil.genOrder(1L);
+        OrderAggregation orderAgg = factory.genOrder(1L);
         orderRepository.put(orderAgg);
 
         return orderAgg;

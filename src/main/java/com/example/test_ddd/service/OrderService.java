@@ -8,24 +8,24 @@ import com.example.test_ddd.infra.entity.OrderCommentEntity;
 import com.example.test_ddd.infra.entity.OrderEntity;
 import com.example.test_ddd.infra.mapper.OrderCommentMapper;
 import com.example.test_ddd.infra.mapper.OrderMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Component
 public class OrderService {
 
-    @Autowired
+    @Resource
     OrderMapper orderMapper;
 
-    @Autowired
+    @Resource
     OrderCommentMapper orderCommentMapper;
 
-    @Autowired
+    @Resource
     OrderRepository orderRepository;
 
-    @Autowired
+    @Resource
     UserRepository userRepository;
 
     public List<OrderEntity> query() {

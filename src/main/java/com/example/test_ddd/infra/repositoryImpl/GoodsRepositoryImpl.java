@@ -9,28 +9,34 @@ import com.example.test_ddd.infra.mapper.GoodsMapper;
 import com.example.test_ddd.infra.mapper.GoodsSpecMapper;
 import com.example.test_ddd.infra.utils.CompareUtil;
 import com.example.test_ddd.infra.utils.SnapshotUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class GoodsRepositoryImpl implements GoodsRepository {
-    @Autowired
+    @Resource
     GoodsMapper goodsMapper;
 
-    @Autowired
+    @Resource
     GoodsSpecMapper goodsSpecMapper;
 
     public GoodsAggregation take(Long goodsId) {
-        GoodsAggregation oldOrder = new GoodsAggregation();
-        oldOrder.setGoodsId(goodsId);
-        oldOrder.setGoodsEntity(goodsMapper.selectById(goodsId));
-        oldOrder.setGoodsSpecList(goodsSpecMapper.selectList((new LambdaQueryWrapper<GoodsSpecEntity>()).eq(GoodsSpecEntity::getGoodsId, goodsId)));
+        GoodsEntity goodsEntity = goodsMapper.selectById(goodsId);
+        if (null == goodsEntity) {
+            return null;
+        }
 
-        SnapshotUtil.putObject(oldOrder);
-        return oldOrder;
+        GoodsAggregation goodsAgg = new GoodsAggregation();
+        goodsAgg.setGoodsId(goodsId);
+        goodsAgg.setGoodsEntity(goodsEntity);
+        goodsAgg.setGoodsSpecList(goodsSpecMapper.selectList((new LambdaQueryWrapper<GoodsSpecEntity>()).eq(GoodsSpecEntity::getGoodsId, goodsId)));
+
+        SnapshotUtil.putObject(goodsAgg);
+        return goodsAgg;
     }
 
-    public void put(GoodsAggregation goodsAggregation) {
+    public void put(GoodsAggregation goodsAgg) {
         //实例化
         CompareUtil compareUtil = new CompareUtil();
 
@@ -39,7 +45,7 @@ public class GoodsRepositoryImpl implements GoodsRepository {
         compareUtil.regCallback(GoodsSpecEntity.class, goodsSpecMapper);
 
         //比较
-        compareUtil.compare(SnapshotUtil.getObject(goodsAggregation), goodsAggregation);
+        compareUtil.compare(SnapshotUtil.getObject(goodsAgg), goodsAgg);
 
         //执行
         compareUtil.run();

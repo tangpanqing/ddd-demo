@@ -2,28 +2,35 @@ package com.example.test_ddd.infra.repositoryImpl;
 
 import com.example.test_ddd.domain.user.UserAggregation;
 import com.example.test_ddd.domain.user.UserRepository;
+import com.example.test_ddd.infra.entity.OrderEntity;
 import com.example.test_ddd.infra.entity.UserEntity;
 import com.example.test_ddd.infra.mapper.UserMapper;
 import com.example.test_ddd.infra.utils.CompareUtil;
 import com.example.test_ddd.infra.utils.SnapshotUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class UserRepositoryImpl implements UserRepository {
-    @Autowired
+    @Resource
     UserMapper userMapper;
 
     public UserAggregation take(Long userId) {
-        UserAggregation oldOrder = new UserAggregation();
-        oldOrder.setUserId(userId);
-        oldOrder.setUserEntity(userMapper.selectById(userId));
+        UserEntity userEntity = userMapper.selectById(userId);
+        if (null == userEntity) {
+            return null;
+        }
 
-        SnapshotUtil.putObject(oldOrder);
-        return oldOrder;
+        UserAggregation userAgg = new UserAggregation();
+        userAgg.setUserId(userId);
+        userAgg.setUserEntity(userEntity);
+
+        SnapshotUtil.putObject(userAgg);
+        return userAgg;
     }
 
-    public void put(UserAggregation userAggregation) {
+    public void put(UserAggregation userAgg) {
         //实例化
         CompareUtil compareUtil = new CompareUtil();
 
@@ -31,7 +38,7 @@ public class UserRepositoryImpl implements UserRepository {
         compareUtil.regCallback(UserEntity.class, userMapper);
 
         //比较
-        compareUtil.compare(SnapshotUtil.getObject(userAggregation), userAggregation);
+        compareUtil.compare(SnapshotUtil.getObject(userAgg), userAgg);
 
         //执行
         compareUtil.run();

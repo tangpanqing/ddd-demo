@@ -38,6 +38,7 @@ public class OrderAggregation {
         getOrderBasic().setStatus(OrderStatusEnum.DELIVER);
         getOrderBasic().setDeliverCode(deliverCode);
     }
+
     public void take(String takeCode) {
         getOrderBasic().setStatus(OrderStatusEnum.TAKE);
         getOrderBasic().setTakeCode(takeCode);
