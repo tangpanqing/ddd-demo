@@ -1,12 +1,10 @@
 package com.example.test_ddd.infra.utils;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import lombok.Data;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
-@Data
 public class CompareUtil {
     private List<Object> addList = new ArrayList<>();
     private List<Object> updateList = new ArrayList<>();
@@ -59,11 +57,11 @@ public class CompareUtil {
     protected void compareObject(Object oldValue, Object newValue) throws NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         if (!"java.lang.Long".equals(newValue.getClass().getName())) {
             if (oldValue == null && newValue != null) {
-                this.getAddList().add(newValue);
+                addList.add(newValue);
             }
 
             if (oldValue != null && newValue == null) {
-                this.getDelList().add(oldValue);
+                delList.add(oldValue);
             }
 
             if (oldValue != null && newValue != null && !oldValue.equals(newValue)) {
@@ -75,10 +73,10 @@ public class CompareUtil {
                 firstFieldOfNewValue.setAccessible(true);
 
                 if (!firstFieldOfOldValue.get(oldValue).equals(firstFieldOfNewValue.get(newValue))) {
-                    this.getDelList().add(oldValue);
-                    this.getAddList().add(newValue);
+                    delList.add(oldValue);
+                    addList.add(newValue);
                 } else {
-                    this.getUpdateList().add(getUpdateObj(oldValue, newValue));
+                    updateList.add(getUpdateObj(oldValue, newValue));
                 }
             }
         }
@@ -110,22 +108,22 @@ public class CompareUtil {
     }
 
     public void run() {
-        this.getAddList().forEach(item -> {
-            BaseMapper callback = this.getFunctionMap().get(item.getClass().getName());
+        addList.forEach(item -> {
+            BaseMapper callback = functionMap.get(item.getClass().getName());
             if (null != callback) {
                 callback.insert(item);
             }
         });
 
-        this.getUpdateList().forEach(item -> {
-            BaseMapper callback = this.getFunctionMap().get(item.getClass().getName());
+        updateList.forEach(item -> {
+            BaseMapper callback = functionMap.get(item.getClass().getName());
             if (null != callback) {
                 callback.updateById(item);
             }
         });
 
-        this.getDelList().forEach(item -> {
-            BaseMapper callback = this.getFunctionMap().get(item.getClass().getName());
+        delList.forEach(item -> {
+            BaseMapper callback = functionMap.get(item.getClass().getName());
             if (null != callback) {
                 callback.deleteById(item);
             }
