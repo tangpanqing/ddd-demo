@@ -1,4 +1,4 @@
-package com.example.test_ddd.controller;
+package com.example.test_ddd.interfaces.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

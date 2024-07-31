@@ -1,4 +1,4 @@
-package com.example.test_ddd.controller;
+package com.example.test_ddd.interfaces.controller;
 
 import com.example.test_ddd.domain.order.OrderAggregation;
 import com.example.test_ddd.domain.order.OrderRepository;
