@@ -8,9 +8,6 @@ import java.util.*;
 
 @Data
 public class CompareUtil {
-    private Object oldObject;
-    private Object newObject;
-
     private List<Object> addList = new ArrayList<>();
     private List<Object> updateList = new ArrayList<>();
     private List<Object> delList = new ArrayList<>();
