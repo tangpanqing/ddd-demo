@@ -7,11 +7,11 @@ import com.example.test_ddd.infra.entity.OrderCommentEntity;
 import com.example.test_ddd.infra.entity.OrderEntity;
 import com.example.test_ddd.domain.Factory;
 import com.example.test_ddd.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
