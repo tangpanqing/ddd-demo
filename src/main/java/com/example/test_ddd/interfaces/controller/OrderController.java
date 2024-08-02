@@ -24,9 +24,6 @@ public class OrderController {
     OrderRepository orderRepository;
 
     @Resource
-    UserRepository userRepository;
-
-    @Resource
     OrderService orderService;
 
     //注意，这里应该返回VO-ViewObject
